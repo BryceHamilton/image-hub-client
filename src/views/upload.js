@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const Upload = () => {
+  const [user] = useContext(UserContext);
   return (
     <div class='row mt-5'>
       <div class='col-md-6 m-auto'>
@@ -10,7 +13,7 @@ const Upload = () => {
           </h1>
           <p>
             <span>
-              <a href='/profile'>user.username</a>
+              <Link to='/profile'>{user.username}</Link>
             </span>
             <form action='/images' method='post' enctype='multipart/form-data'>
               <label class='form-label'>🔥 Upload your Images 👇</label>

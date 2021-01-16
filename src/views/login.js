@@ -1,17 +1,34 @@
-import React, { useReducer } from 'react';
-
-const formReducer = (state, event) => {
-  return {
-    ...state,
-    [event.target.name]: event.target.value,
-  };
-};
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const Login = () => {
-  const [formData, setFormData] = useReducer(formReducer, {});
+  const history = useHistory();
+  const setUser = React.useContext(UserContext)[1];
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
+
   const handleSubmit = (event) => {
+    setError('');
     event.preventDefault();
-    console.log(formData);
+    const data = { username, password };
+    console.log(data);
+    fetch('http://localhost:4000/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(async (res) => {
+        if (res.ok) return res.json();
+        const json = await res.json();
+        throw new Error(json.Message);
+      })
+      .then((json) => {
+        setUser(json.user);
+        history.push('/profile');
+      })
+      .catch((err) => setError(err.message));
   };
   return (
     <div className='row mt-5 '>
@@ -33,7 +50,8 @@ const Login = () => {
                 placeholder='Username'
                 required
                 autofocus
-                onChange={setFormData}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <label for='password' className='sr-only'>
                 Password
@@ -44,7 +62,8 @@ const Login = () => {
                 className='form-control'
                 placeholder='Password'
                 required
-                onChange={setFormData}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <button
@@ -54,6 +73,7 @@ const Login = () => {
                 Login
               </button>
             </div>
+            {error}
           </form>
         </div>
       </div>

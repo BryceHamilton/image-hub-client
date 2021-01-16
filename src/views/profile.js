@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const AdminCard = () => {};
 
 const Profile = () => {
-  const [images, setImages] = React.useState([]);
+  const [images] = React.useState([]);
+  const [user] = React.useContext(UserContext);
   return (
     <main>
       <div class='row mt-5'>
@@ -13,8 +16,8 @@ const Profile = () => {
               <i class='far fa-images'></i>
             </h1>
             <p>
-              <div>Welcome user.username</div>
-              <a href='/upload'> Upload </a>
+              <div>Welcome {user.username}</div>
+              <Link to='/upload'> Upload </Link>
             </p>
           </div>
         </div>

@@ -17,7 +17,8 @@ const ImageCard = (props) => {
               <a
                 type='button'
                 class='btn btn-sm btn-outline-secondary'
-                href='<%= image.location %>'
+                href={location}
+                target='#'
               >
                 View
               </a>

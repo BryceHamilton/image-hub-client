@@ -4,22 +4,32 @@ import { UserContext } from '../App.js';
 
 const Signup = () => {
   const history = useHistory();
-  const [user, setUser] = React.useContext(UserContext);
+  const setUser = React.useContext(UserContext)[1];
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
 
   const handleSubmit = (event) => {
+    setError('');
     event.preventDefault();
-    const form = { username, email, password };
-    const data = new FormData();
-    Object.entries(form).forEach(([key, value]) => data.append(key, value));
-    fetch('http://localhost:4000/auth/signup', { method: 'POST', body: data })
-      .then((res) => res.json())
+    const data = { username, email, password };
+    console.log(data);
+    fetch('http://localhost:4000/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(async (res) => {
+        if (res.ok) return res.json();
+        const json = await res.json();
+        throw new Error(json.Message);
+      })
       .then((json) => {
         setUser(json.user);
         history.push('/profile');
-      });
+      })
+      .catch((err) => setError(err.message));
   };
 
   return (
@@ -77,6 +87,7 @@ const Signup = () => {
                 Sign in
               </button>
             </div>
+            {error}
           </form>
         </div>
       </div>
