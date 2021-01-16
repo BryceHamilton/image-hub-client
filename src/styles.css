@@ -1,0 +1,23 @@
+nav.navbar {
+  justify-content: flex-end;
+}
+
+nav.navbar li {
+  margin: 0;
+  list-style: none;
+}
+
+img.card-img {
+  height: 225px;
+}
+
+div.sign-up {
+  max-width: 35%;
+}
+
+div.sign-up-inputs {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 200px;
+}
