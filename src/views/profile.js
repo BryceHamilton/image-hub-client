@@ -1,12 +1,48 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Switch from '@material-ui/core/Switch';
 import { UserContext } from '../App';
 import PrivateImages from '../components/private-images';
 import PublicImages from '../components/public-images';
+import api from '../api';
 
 const Profile = () => {
-  const [isPublic, setIsPublic] = React.useState(true);
   const [user] = React.useContext(UserContext);
+  const [isPublic, setIsPublic] = React.useState(true);
+  const [images, setImages] = React.useState([]);
+
+  const selectedImages = images.filter((image) => image.checked);
+  const areImagesToDelete = !!selectedImages.length;
+
+  const selectImage = (idx) => {
+    const newImages = [...images];
+    newImages[idx] = { ...newImages[idx], checked: !newImages[idx].checked };
+    setImages(newImages);
+  };
+
+  const removeImage = (id) => {
+    setImages(images.filter((image) => image._id !== id));
+  };
+
+  const deleteSelected = async () => {
+    if (window.confirm('Delete selected Images?')) {
+      const selectedImageIds = selectedImages.map((image) => image._id);
+      const body = JSON.stringify({ images: selectedImageIds });
+      const res = await fetch(api('/images/delete'), {
+        method: 'GET',
+        body,
+        credentials: 'include',
+      });
+      if (res.ok) {
+        const json = res.json();
+        const { deleted } = json;
+        setImages(images.filter((image) => !deleted.includes(image._id)));
+      }
+    }
+  };
+
+  const imagesProps = { images, setImages, selectImage, removeImage };
+
   return (
     <main>
       <div className='row mt-5'>
@@ -23,21 +59,24 @@ const Profile = () => {
               >
                 Upload
               </Link>
+              {areImagesToDelete && (
+                <button
+                  className='btn my-2 my-sm-0 del-button'
+                  onClick={deleteSelected}
+                >
+                  Delete Selected
+                </button>
+              )}
               <div>
-                <button
-                  className='btn btn-outline-success my-2 my-sm-0'
-                  id={isPublic ? 'active' : ''}
-                  onClick={() => setIsPublic(true)}
-                >
-                  Public
-                </button>
-                <button
-                  className='btn btn-outline-success my-2 my-sm-0'
-                  id={!isPublic ? 'active' : ''}
-                  onClick={() => setIsPublic(false)}
-                >
-                  Private
-                </button>
+                <span>Private</span>
+                <Switch
+                  defaultChecked
+                  color='default'
+                  inputProps={{ 'aria-label': 'checkbox with default color' }}
+                  onClick={() => setIsPublic(!isPublic)}
+                  value={isPublic}
+                />
+                <span>Public</span>
               </div>
             </p>
           </div>
@@ -45,7 +84,11 @@ const Profile = () => {
       </div>
       <div className='album py-5 bg-light'>
         <div className='container'>
-          {isPublic ? <PublicImages /> : <PrivateImages />}
+          {isPublic ? (
+            <PublicImages {...imagesProps} />
+          ) : (
+            <PrivateImages {...imagesProps} />
+          )}
         </div>
       </div>
     </main>

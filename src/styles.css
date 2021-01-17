@@ -34,5 +34,15 @@ button#active {
   border-color: #28a745;
 }
 
-div.image-card {
+button.del-button {
+  position: absolute;
+  right: 80px;
+  color: rgb(32, 155, 222);
+  border-color: rgb(32, 155, 222);
+}
+
+button.del-button:hover {
+  color: #fff;
+  background-color: rgb(32, 155, 222);
+  border-color: rgb(32, 155, 222);
 }

@@ -1,16 +1,18 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import api from '../api';
 
-const AdminCard = ({ image, location }) => {
-  const history = useHistory();
-  const deleteImage = () => {
+const AdminCard = ({ image, removeImage, location, handleCheck }) => {
+  const deleteImage = async () => {
     if (window.confirm('Delete this Image?')) {
-      fetch(api(`/images/${image._id}`), {
+      const res = await fetch(api(`/images/${image._id}`), {
         method: 'DELETE',
         credentials: 'include',
       });
-      history.push('/');
+      if (res.ok) {
+        const json = await res.json();
+        console.log(json);
+        removeImage(json.deleted);
+      }
     }
   };
   return (
@@ -34,9 +36,14 @@ const AdminCard = ({ image, location }) => {
                 className='btn btn-sm btn-outline-secondary'
                 onClick={deleteImage}
               >
-                Delete
+                <i class='fas fa-trash-alt'></i>
               </button>
             </div>
+            <input
+              type='checkbox'
+              value={image.checked}
+              onChange={handleCheck}
+            />
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ const Upload = () => {
     fetch(api(url), {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'multipart/form-data' },
       credentials: 'include',
     }).then(async (res) => {
       const json = await res.json();
@@ -37,19 +37,10 @@ const Upload = () => {
               action={api('/images')}
               ref={form}
               onSubmit={handleSubmit}
-              enctype='multipart/form-data'
+              encType='multipart/form-data'
             >
               <label class='form-label'>🔥 Upload your Images 👇</label>
               <div>
-                <label class='form-label' for='title'>
-                  Title
-                </label>
-                <input type='text' class='form-control' name='title' />
-                <label class='form-label' for='description'>
-                  Description
-                </label>
-                <input type='text' class='form-control' name='description' />
-                <label class='form-label'>Images</label>
                 <input
                   type='file'
                   class='form-control'
