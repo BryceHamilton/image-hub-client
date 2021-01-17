@@ -1,27 +1,32 @@
 import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../api';
+import { UserImageContext } from '../App';
 
 const Upload = () => {
   const history = useHistory();
   const form = useRef(null);
   const [message, setMessage] = useState('');
   const [checked, setChecked] = useState(false);
+  const [images, setImages] = React.useContext(UserImageContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(form.current);
     const url = `/images${checked ? '/public' : ''}`;
-
+    data.append('test', 'hi');
     fetch(api(url), {
       method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'multipart/form-data' },
+      body: data,
       credentials: 'include',
     }).then(async (res) => {
       const json = await res.json();
       setMessage(json.Message);
-      if (res.ok) history.push('/profile');
+      if (res.ok) {
+        console.log(json.uploads);
+        setImages([...images, json.uploads]);
+        history.push('/profile');
+      }
     });
   };
 

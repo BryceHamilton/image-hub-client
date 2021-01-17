@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
-import { UserContext } from '../App';
+import { UserContext, UserImageContext } from '../App';
 import PrivateImages from '../components/private-images';
 import PublicImages from '../components/public-images';
 import api from '../api';
@@ -9,7 +9,7 @@ import api from '../api';
 const Profile = () => {
   const [user] = React.useContext(UserContext);
   const [isPublic, setIsPublic] = React.useState(true);
-  const [images, setImages] = React.useState([]);
+  const [images, setImages] = React.useContext(UserImageContext);
 
   const selectedImages = images.filter((image) => image.checked);
   const areImagesToDelete = !!selectedImages.length;
@@ -29,14 +29,24 @@ const Profile = () => {
       const selectedImageIds = selectedImages.map((image) => image._id);
       const body = JSON.stringify({ images: selectedImageIds });
       const res = await fetch(api('/images/delete'), {
-        method: 'GET',
+        method: 'POST',
         body,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
         credentials: 'include',
       });
       if (res.ok) {
-        const json = res.json();
+        const json = await res.json();
         const { deleted } = json;
-        setImages(images.filter((image) => !deleted.includes(image._id)));
+        console.log(deleted);
+        setImages(
+          images.filter((image) => {
+            console.log(image._id);
+            return !deleted.includes(image._id);
+          }),
+        );
       }
     }
   };

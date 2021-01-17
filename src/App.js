@@ -6,10 +6,12 @@ import api from './api';
 import './styles.css';
 
 export const UserContext = React.createContext();
+export const UserImageContext = React.createContext();
 
 function App() {
   const history = useHistory();
   const [user, setUser] = React.useState(null);
+  const [userImages, setUserImages] = React.useState([]);
 
   React.useEffect(() => {
     fetch(api('/auth'), { method: 'GET', credentials: 'include' })
@@ -28,10 +30,12 @@ function App() {
   }, [history]);
   return (
     <UserContext.Provider value={[user, setUser]}>
-      <Router>
-        <Nav />
-        <AppRoutes />
-      </Router>
+      <UserImageContext.Provider value={[userImages, setUserImages]}>
+        <Router>
+          <Nav />
+          <AppRoutes />
+        </Router>
+      </UserImageContext.Provider>
     </UserContext.Provider>
   );
 }

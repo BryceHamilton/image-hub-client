@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
+import api from '../api/index.js';
 import { UserContext } from '../App.js';
 
 const Signup = () => {
@@ -15,13 +16,14 @@ const Signup = () => {
     event.preventDefault();
     const data = { username, email, password };
     console.log(data);
-    fetch('http://localhost:4000/auth/signup', {
+    fetch(api('/auth/signup'), {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     })
       .then(async (res) => {
+        console.log(res);
         if (res.ok) return res.json();
         const json = await res.json();
         throw new Error(json.Message);
