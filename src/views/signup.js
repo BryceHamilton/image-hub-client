@@ -1,10 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { UserContext } from '../App.js';
 
 const Signup = () => {
   const history = useHistory();
-  const setUser = React.useContext(UserContext)[1];
+  const [user, setUser] = React.useContext(UserContext);
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -19,6 +19,7 @@ const Signup = () => {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     })
       .then(async (res) => {
         if (res.ok) return res.json();
@@ -31,7 +32,9 @@ const Signup = () => {
       })
       .catch((err) => setError(err.message));
   };
-
+  if (user) {
+    return <Redirect to='/' />;
+  }
   return (
     <div className='row mt-5 '>
       <div className='col-md-6 m-auto sign-up'>

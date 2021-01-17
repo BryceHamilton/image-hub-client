@@ -1,9 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../api';
 import { UserContext } from '../App';
 
 const Upload = () => {
   const [user] = useContext(UserContext);
+  const form = useRef(null);
+  const [message, setMessage] = useState('');
+  const [checked, setChecked] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(form.current);
+    const url = `/images${checked ? '/public' : ''}`;
+    fetch(api(url), {
+      method: 'POST',
+      body: data,
+      credentials: 'include',
+    }).then(async (res) => {
+      if (!res.ok) return true;
+      const json = await res.json();
+      setMessage(json.Message);
+    });
+  };
+
   return (
     <div class='row mt-5'>
       <div class='col-md-6 m-auto'>
@@ -15,7 +35,12 @@ const Upload = () => {
             <span>
               <Link to='/profile'>{user.username}</Link>
             </span>
-            <form action='/images' method='post' enctype='multipart/form-data'>
+            <form
+              action={api('/images')}
+              ref={form}
+              onSubmit={handleSubmit}
+              enctype='multipart/form-data'
+            >
               <label class='form-label'>🔥 Upload your Images 👇</label>
               <div>
                 <label class='form-label' for='title'>
@@ -30,9 +55,16 @@ const Upload = () => {
                 <input
                   type='file'
                   class='form-control'
-                  name='file'
+                  name='images'
                   multiple='multiple'
                   accept='image/*'
+                />
+                <label class='form-label'>Public</label>
+                <input
+                  type='checkbox'
+                  class='form-control'
+                  value={checked}
+                  onChange={() => setChecked(!checked)}
                 />
 
                 <input
@@ -41,6 +73,7 @@ const Upload = () => {
                   style={{ marginTop: '30px' }}
                 />
               </div>
+              {message}
             </form>
           </p>
         </div>

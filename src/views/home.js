@@ -1,13 +1,13 @@
 import React from 'react';
 import ImageCard from '../components/image-card';
+import api from '../api';
 
 const Home = () => {
   const [images, setImages] = React.useState([]);
   React.useEffect(() => {
     const fetchImages = async () => {
-      const res = await fetch('http://localhost:4000/images');
+      const res = await fetch(api('/images'));
       const data = await res.json();
-      console.log(data);
       setImages(data.images);
     };
     fetchImages();

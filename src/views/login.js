@@ -1,10 +1,11 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { UserContext } from '../App';
+import api from '../api';
 
 const Login = () => {
   const history = useHistory();
-  const setUser = React.useContext(UserContext)[1];
+  const [user, setUser] = React.useContext(UserContext);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
@@ -14,10 +15,10 @@ const Login = () => {
     event.preventDefault();
     const data = { username, password };
     console.log(data);
-    fetch('http://localhost:4000/auth/login', {
+    fetch(api('/auth/login'), {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     })
       .then(async (res) => {
         if (res.ok) return res.json();
@@ -30,6 +31,10 @@ const Login = () => {
       })
       .catch((err) => setError(err.message));
   };
+
+  if (user) {
+    return <Redirect to='/' />;
+  }
   return (
     <div className='row mt-5 '>
       <div className='col-md-6 m-auto sign-up'>
