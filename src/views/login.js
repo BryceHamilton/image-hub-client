@@ -24,7 +24,6 @@ const Login = () => {
       .then(async (res) => {
         if (res.ok) return res.json();
         const json = await res.json();
-        console.log(json);
         throw new Error(json.Message);
       })
       .then((json) => {

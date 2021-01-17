@@ -12,9 +12,11 @@ const Upload = () => {
     e.preventDefault();
     const data = new FormData(form.current);
     const url = `/images${checked ? '/public' : ''}`;
+
     fetch(api(url), {
       method: 'POST',
-      body: data,
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     }).then(async (res) => {
       const json = await res.json();
