@@ -8,38 +8,42 @@ const Nav = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isProfile = location.pathname === '/profile';
+  const isLogin = location.pathname === '/login';
+  const isSignup = location.pathname === '/signup';
   const [user, setUser] = useContext(UserContext);
 
   const logout = () => {
-    fetch(api('/auth/logout')).then((res) => {
-      if (res.ok) {
-        setUser('');
-        history.push('/');
-      }
-    });
+    fetch(api('/auth/logout'), { method: 'GET', credentials: 'include' }).then(
+      (res) => {
+        if (res.ok) {
+          setUser('');
+          history.push('/');
+        }
+      },
+    );
   };
 
   return (
-    <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+    <nav className='navbar navbar-expand-lg navbar-light bg-light'>
       <ul>
         <li>
           {!isHome && (
-            <Link class='btn btn-outline-success my-2 my-sm-0' to='/'>
-              <i class='far fa-images'></i>
+            <Link className='btn btn-outline-success my-2 my-sm-0' to='/'>
+              <i className='far fa-images'></i>
             </Link>
           )}
           {user ? (
             <>
               {!isProfile && (
                 <Link
-                  class='btn btn-outline-success my-2 my-sm-0'
+                  className='btn btn-outline-success my-2 my-sm-0'
                   to='/profile'
                 >
-                  <i class='fas fa-user'></i>
+                  <i className='fas fa-user'></i>
                 </Link>
               )}
               <button
-                class='btn btn-outline-success my-2 my-sm-0'
+                className='btn btn-outline-success my-2 my-sm-0'
                 onClick={logout}
               >
                 Logout
@@ -47,12 +51,22 @@ const Nav = () => {
             </>
           ) : (
             <>
-              <Link class='btn btn-outline-success my-2 my-sm-0' to='/signup'>
-                Sign up
-              </Link>
-              <Link class='btn btn-outline-success my-2 my-sm-0' to='/login'>
-                Login
-              </Link>
+              {!isSignup && (
+                <Link
+                  className='btn btn-outline-success my-2 my-sm-0'
+                  to='/signup'
+                >
+                  Sign up
+                </Link>
+              )}
+              {!isLogin && (
+                <Link
+                  className='btn btn-outline-success my-2 my-sm-0'
+                  to='/login'
+                >
+                  Login
+                </Link>
+              )}
             </>
           )}
         </li>

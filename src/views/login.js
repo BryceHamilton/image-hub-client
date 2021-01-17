@@ -18,11 +18,13 @@ const Login = () => {
     fetch(api('/auth/login'), {
       method: 'POST',
       body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     })
       .then(async (res) => {
         if (res.ok) return res.json();
         const json = await res.json();
+        console.log(json);
         throw new Error(json.Message);
       })
       .then((json) => {
