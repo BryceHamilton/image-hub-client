@@ -1,10 +1,9 @@
-import React, { useContext, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import api from '../api';
-import { UserContext } from '../App';
 
 const Upload = () => {
-  const [user] = useContext(UserContext);
+  const history = useHistory();
   const form = useRef(null);
   const [message, setMessage] = useState('');
   const [checked, setChecked] = useState(false);
@@ -18,9 +17,9 @@ const Upload = () => {
       body: data,
       credentials: 'include',
     }).then(async (res) => {
-      if (!res.ok) return true;
       const json = await res.json();
       setMessage(json.Message);
+      if (res.ok) history.push('/profile');
     });
   };
 
@@ -32,9 +31,6 @@ const Upload = () => {
             <i class='far fa-images'></i>
           </h1>
           <p>
-            <span>
-              <Link to='/profile'>{user.username}</Link>
-            </span>
             <form
               action={api('/images')}
               ref={form}

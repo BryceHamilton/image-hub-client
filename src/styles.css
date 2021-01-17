@@ -27,3 +27,12 @@ input[type='checkbox'].form-control:focus {
   border: none;
   box-shadow: none;
 }
+
+button#active {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+div.image-card {
+}

@@ -35,7 +35,7 @@ const Nav = () => {
                   class='btn btn-outline-success my-2 my-sm-0'
                   to='/profile'
                 >
-                  {user.username}
+                  <i class='fas fa-user'></i>
                 </Link>
               )}
               <button

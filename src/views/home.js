@@ -15,6 +15,7 @@ const Home = () => {
   return (
     <div class='album py-5 bg-light'>
       <div class='container'>
+        <h2>Image Hub</h2>
         <div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
           {images.map((image) => (
             <ImageCard image={image} />
