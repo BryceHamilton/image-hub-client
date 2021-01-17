@@ -7,13 +7,13 @@ const Upload = () => {
   const history = useHistory();
   const form = useRef(null);
   const [message, setMessage] = useState('');
-  const [checked, setChecked] = useState(false);
-  const [images, setImages] = React.useContext(UserImageContext);
+  const [isPublic, setIsPublic] = useState(false);
+  const setImages = React.useContext(UserImageContext)[1];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(form.current);
-    const url = `/images${checked ? '/public' : ''}`;
+    const url = `/images${isPublic ? '/public' : ''}`;
     data.append('test', 'hi');
     fetch(api(url), {
       method: 'POST',
@@ -23,9 +23,16 @@ const Upload = () => {
       const json = await res.json();
       setMessage(json.Message);
       if (res.ok) {
-        console.log(json.uploads);
-        setImages([...images, json.uploads]);
-        history.push('/profile');
+        fetch(api(`/images/${isPublic ? 'public' : ''}/user`), {
+          method: 'GET',
+          credentials: 'include',
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            console.log(json);
+            setImages(json.images);
+          })
+          .then(() => history.push('/profile'));
       }
     });
   };
@@ -57,8 +64,8 @@ const Upload = () => {
                 <input
                   type='checkbox'
                   class='form-control'
-                  value={checked}
-                  onChange={() => setChecked(!checked)}
+                  value={isPublic}
+                  onChange={() => setIsPublic(!isPublic)}
                 />
 
                 <input
