@@ -40,13 +40,7 @@ const Profile = () => {
       if (res.ok) {
         const json = await res.json();
         const { deleted } = json;
-        console.log(deleted);
-        setImages(
-          images.filter((image) => {
-            console.log(image._id);
-            return !deleted.includes(image._id);
-          }),
-        );
+        setImages(images.filter((image) => !deleted.includes(image._id)));
       }
     }
   };
