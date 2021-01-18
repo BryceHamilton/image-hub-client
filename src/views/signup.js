@@ -28,8 +28,8 @@ const Signup = () => {
         throw new Error(json.Message);
       })
       .then((json) => {
-        // bad! cookie should be set server side, httpOnly
-        document.cookie = `token=${json.token}; max-age=60*60*24; Secure`;
+        // bad! cookie should be set server side, httpOnly, secure
+        document.cookie = `token=${json.token}; max-age=60*60*24;`;
         setUser(json.user);
         history.push('/profile');
       })
