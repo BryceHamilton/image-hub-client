@@ -13,14 +13,17 @@ const Nav = () => {
   const [user, setUser] = useContext(UserContext);
 
   const logout = () => {
-    fetch(api('/auth/logout'), { method: 'GET', credentials: 'include' }).then(
-      (res) => {
-        if (res.ok) {
-          setUser('');
-          history.push('/');
-        }
-      },
-    );
+    fetch(api('/auth/logout'), {
+      method: 'GET',
+      credentials: 'include',
+      // bad! cookie should be httpOnly
+      headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
+    }).then((res) => {
+      if (res.ok) {
+        setUser('');
+        history.push('/');
+      }
+    });
   };
 
   return (

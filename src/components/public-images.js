@@ -9,6 +9,8 @@ const PublicImages = ({ images, setImages, selectImage, removeImage }) => {
       const res = await fetch(api('/images/public/user'), {
         method: 'GET',
         credentials: 'include',
+        // bad! cookie should be httpOnly
+        headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
       });
       if (res.ok) {
         const data = await res.json();

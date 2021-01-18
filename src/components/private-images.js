@@ -9,6 +9,8 @@ const PrivateImages = ({ images, setImages, selectImage, removeImage }) => {
       const res = await fetch(api('/images/user'), {
         method: 'GET',
         credentials: 'include',
+        // bad! cookie should be httpOnly
+        headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
       });
       const data = await res.json();
       setImages(data.images);

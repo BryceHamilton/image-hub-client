@@ -5,7 +5,7 @@ const ImageCard = (props) => {
   return (
     <div className='image-card'>
       <div className='card shadow-sm'>
-        <img className='card-img' src={image.location} alt='' />
+        <img className='card-img' src={image.location} alt='' width='375px' />
         <div className='card-body'>
           <h6>{image.title}</h6>
           <p className='card-text'>{image.description}</p>

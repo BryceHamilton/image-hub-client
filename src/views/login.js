@@ -17,7 +17,7 @@ const Login = () => {
     fetch(api('/auth/login'), {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', mode: 'cors' },
       credentials: 'include',
     })
       .then(async (res) => {

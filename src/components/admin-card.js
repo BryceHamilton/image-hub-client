@@ -7,6 +7,8 @@ const AdminCard = ({ image, removeImage, location, handleCheck }) => {
       const res = await fetch(api(`/images/${image._id}`), {
         method: 'DELETE',
         credentials: 'include',
+        // bad! cookie should be httpOnly
+        headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
       });
       if (res.ok) {
         const json = await res.json();
@@ -18,7 +20,7 @@ const AdminCard = ({ image, removeImage, location, handleCheck }) => {
   return (
     <div className='image-card'>
       <div className='card shadow-sm'>
-        <img className='card-img' src={location} alt='' />
+        <img className='card-img' src={location} alt='' width='375px' />
         <div className='card-body'>
           <h6>{image.title}</h6>
           <p className='card-text'>{image.description}</p>

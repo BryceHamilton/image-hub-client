@@ -34,6 +34,8 @@ const Profile = () => {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
+          // bad! cookie should be httpOnly
+          Authorization: 'Bearer ' + document.cookie.split('=')[1],
         },
         credentials: 'include',
       });

@@ -14,11 +14,12 @@ const Upload = () => {
     e.preventDefault();
     const data = new FormData(form.current);
     const url = `/images${isPublic ? '/public' : ''}`;
-    data.append('test', 'hi');
     fetch(api(url), {
       method: 'POST',
       body: data,
       credentials: 'include',
+      // bad! cookie should be httpOnly
+      headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
     }).then(async (res) => {
       const json = await res.json();
       setMessage(json.Message);
@@ -26,6 +27,8 @@ const Upload = () => {
         fetch(api(`/images/${isPublic ? 'public' : ''}/user`), {
           method: 'GET',
           credentials: 'include',
+          // bad! cookie should be httpOnly
+          headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
         })
           .then((res) => res.json())
           .then((json) => {

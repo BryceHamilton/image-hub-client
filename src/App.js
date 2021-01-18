@@ -14,7 +14,12 @@ function App() {
   const [userImages, setUserImages] = React.useState([]);
 
   React.useEffect(() => {
-    fetch(api('/auth'), { method: 'GET', credentials: 'include' })
+    fetch(api('/auth'), {
+      method: 'GET',
+      credentials: 'include',
+      // bad! cookie should be httpOnly
+      headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
+    })
       .then(async (res) => {
         if (res.ok) return res.json();
         const json = await res.json();
