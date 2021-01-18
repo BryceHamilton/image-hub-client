@@ -28,6 +28,7 @@ const Signup = () => {
         throw new Error(json.Message);
       })
       .then((json) => {
+        // bad! cookie should be set server side, httpOnly and secure
         document.cookie = `token=${json.token}`;
         setUser(json.user);
         history.push('/profile');

@@ -25,8 +25,10 @@ function App() {
         const json = await res.json();
         throw new Error(json.Message);
       })
-      .then((data) => {
-        setUser(data.user);
+      .then((json) => {
+        // bad! cookie should be set server side, httpOnly and secure
+        document.cookie = `token=${json.token}`;
+        setUser(json.user);
         history.push('/');
       })
       .catch((err) => {
