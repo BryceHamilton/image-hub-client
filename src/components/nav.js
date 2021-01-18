@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { UserContext } from '../App';
-import api from '../api';
 
 const Nav = () => {
   const history = useHistory();
@@ -10,20 +9,11 @@ const Nav = () => {
   const isProfile = location.pathname === '/profile';
   const isLogin = location.pathname === '/login';
   const isSignup = location.pathname === '/signup';
-  const [user, setUser] = useContext(UserContext);
+  const [user] = useContext(UserContext);
 
   const logout = () => {
-    fetch(api('/auth/logout'), {
-      method: 'GET',
-      credentials: 'include',
-      // bad! cookie should be httpOnly
-      headers: { Authorization: 'Bearer ' + document.cookie.split('=')[1] },
-    }).then((res) => {
-      if (res.ok) {
-        setUser('');
-        history.push('/');
-      }
-    });
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    history.push('/');
   };
 
   return (
