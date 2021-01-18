@@ -26,8 +26,8 @@ const Login = () => {
         throw new Error(json.Message);
       })
       .then((json) => {
-        // bad! cookie should be set server side, httpOnly and secure
-        document.cookie = `token=${json.token}`;
+        // bad! cookie should be set server side, httpOnly
+        document.cookie = `token=${json.token}; max-age=60*60*24; Secure;`;
         setUser(json.user);
         history.push('/profile');
       })
