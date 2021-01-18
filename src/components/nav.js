@@ -9,10 +9,11 @@ const Nav = () => {
   const isProfile = location.pathname === '/profile';
   const isLogin = location.pathname === '/login';
   const isSignup = location.pathname === '/signup';
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
 
   const logout = () => {
     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setUser(null);
     history.push('/');
   };
 
