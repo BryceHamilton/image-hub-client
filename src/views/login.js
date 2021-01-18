@@ -26,6 +26,7 @@ const Login = () => {
         throw new Error(json.Message);
       })
       .then((json) => {
+        document.cookie = `token=${json.token}`;
         setUser(json.user);
         history.push('/profile');
       })

@@ -23,12 +23,12 @@ const Signup = () => {
       credentials: 'include',
     })
       .then(async (res) => {
-        console.log(res);
         if (res.ok) return res.json();
         const json = await res.json();
         throw new Error(json.Message);
       })
       .then((json) => {
+        document.cookie = `token=${json.token}`;
         setUser(json.user);
         history.push('/profile');
       })
