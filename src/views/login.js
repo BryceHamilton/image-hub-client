@@ -14,7 +14,6 @@ const Login = () => {
     setError('');
     event.preventDefault();
     const data = { username, password };
-    console.log(data);
     fetch(api('/auth/login'), {
       method: 'POST',
       body: JSON.stringify(data),
