@@ -53,3 +53,7 @@ button.del-button:hover {
   margin-left: 10vw;
   width: unset;
 }
+
+img.card-img {
+  height: 35vh;
+}
