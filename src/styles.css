@@ -7,9 +7,8 @@ nav.navbar li {
   list-style: none;
 }
 
-img.card-img {
-  height: 225px;
-  width: 375px;
+div.image-card {
+  width: 25vw;
 }
 
 div.sign-up {
@@ -23,7 +22,7 @@ div.sign-up-inputs {
   height: 200px;
 }
 
-input[type='checkbox'].form-control:focus {
+input[type="checkbox"].form-control:focus {
   outline: none;
   border: none;
   box-shadow: none;
@@ -46,4 +45,11 @@ button.del-button:hover {
   color: #fff;
   background-color: rgb(32, 155, 222);
   border-color: rgb(32, 155, 222);
+}
+
+.container {
+  max-width: unset;
+  margin-right: 10vw;
+  margin-left: 10vw;
+  width: unset;
 }
